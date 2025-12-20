@@ -1,0 +1,3 @@
+singleton WishesTheme 1.0 WishesTheme.qml
+singleton SmileySansFontLoader 1.0 SmileySansFontLoader.qml
+singleton UIConfig 1.0 UIConfig.qml

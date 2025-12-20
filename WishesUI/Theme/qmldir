@@ -1,0 +1,2 @@
+singleton WishesTheme 1.0 WishesTheme.qml
+singleton UIConfig 1.0 UIConfig.qml

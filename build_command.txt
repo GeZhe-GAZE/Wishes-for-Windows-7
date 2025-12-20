@@ -1,0 +1,1 @@
+nuitka --standalone --output-dir=dist --include-data-dir=Data=Data --include-package=colorama Code\main_command.py
