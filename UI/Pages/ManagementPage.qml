@@ -10,24 +10,56 @@ import "../../UI/Pages/ManagementPages"
 Item {
     id: root
 
-    Item {
-        id: toggleGroup
+    Text {
+        text: "管理"
         anchors {
             top: parent.top
             right: parent.right
         }
-        height: 60
-        width: 300
+        font {
+            family: WishesTheme.fontFamily
+            pointSize: 20
+            bold: true
+        }
+        color: WishesTheme.current.titleColor
+    }
+
+    ToggleGroup {
+        id: toggleGroup
+        anchors {
+            verticalCenter: parent.verticalCenter
+            right: parent.right
+        }
+        height: 200
+        width: 50
+        layoutDirection: Qt.Vertical
+
+        radius: 10
+
+        model: ListModel {
+            ListElement {text: "卡片"}
+            ListElement {text: "卡组"}
+            ListElement {text: "逻辑"}
+            ListElement {text: "卡池"}
+        }
     }
 
     SwitchView {
         id: view
-        anchors.fill: parent
+        anchors {
+            top: parent.top
+            left: parent.left
+            right: toggleGroup.left
+            bottom: parent.bottom
+            rightMargin: 10
+        }
         verticalAnimation: false
         animationInOffset: width
         animationOutOffset: -width
 
         initTag: "card"
+
+        background.visible: false
 
         CardManagementPage {
             id: cardManagementPage

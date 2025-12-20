@@ -41,3 +41,6 @@ ToolScripts/
 
 # Font Files
 *.ttf
+
+# Discard Files
+Discard/

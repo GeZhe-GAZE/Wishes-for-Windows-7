@@ -9,8 +9,8 @@ Item {
 
     // 文本参数
     property bool fontBold: true
-    property int fontSize: 22
-    property string fontFamily: WishesTheme.textFamily
+    property int fontPointSize: 22
+    property string fontFamily: WishesTheme.fontFamily
 
     // 颜色参数
     property color colorNormal: WishesTheme.current.buttonColor
@@ -18,9 +18,9 @@ Item {
     property color colorToggled: WishesTheme.current.toggledColor
     property real bgOpacity: 1
 
-    property color textColorCommon: "black"
+    property color textColorCommon: WishesTheme.current.textColor
     property color textColorHovered: textColorCommon
-    property color textColorToggled: textColorCommon
+    property color textColorToggled: WishesTheme.current.textActiveColor
 
     property real scaleCommon: 1.0
     property real scaleHovered: 1.0
@@ -152,7 +152,7 @@ Item {
         color: root.textColorCommon
         font {
             family: root.fontFamily
-            pixelSize: root.fontSize
+            pixelSize: root.fontPointSize
             bold: root.fontBold
         }
         horizontalAlignment: Text.AlignHCenter
