@@ -1,5 +1,6 @@
 from ManageSystem import *
 from GameAdaptationModule import *
+from ImageManageModule import *
 from WishesQmlAPI import QCard, QCardPool
 from PySide2.QtCore import Property, Slot, Signal, QObject, QAbstractListModel
 
@@ -39,6 +40,9 @@ class Backend(QObject):
 
             self.star_rarity_adapter = StarRarityAdapter(STAR_RARITY_MAP_FILE)
 
+            self.profession_image_manager = ProfessionImageManager(PROFESSION_IMAGE_PATH_CONFIG_FILE)
+            self.attribute_image_manager = AttributeImageManager(ATTRIBUTE_IMAGE_PATH_CONFIG_FILE)
+
         except:
             print("Backend Error:")
             msg = traceback.format_exc()
@@ -57,6 +61,36 @@ class Backend(QObject):
     @Property(list, notify=cardPoolListChanged)
     def card_pool_list(self) -> List[QCardPool]:
         return self.q_card_pool_list
+
+    @Slot(str, str, result=str)
+    def image_get_profession(self, game: str, profession: str) -> str:
+        try:
+            res = self.profession_image_manager.get_path(game, profession)
+            return res
+        except ValueError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except FileNotFoundError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except Exception:
+            msg = traceback.format_exc()
+            self.errorHappened.emit("图像获取错误", msg) # type: ignore
+
+        return ""
+
+    @Slot(str, str, result=str)
+    def image_get_attribute(self, game: str, attribute: str) -> str:
+        try:
+            res = self.attribute_image_manager.get_path(game, attribute)
+            return res
+        except ValueError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except FileNotFoundError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except Exception:
+            msg = traceback.format_exc()
+            self.errorHappened.emit("图像获取错误", msg) # type: ignore
+
+        return ""
 
 
 if __name__ == "__main__":

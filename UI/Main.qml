@@ -22,6 +22,7 @@ Window {
     Connections {
         target: backend
         function onErrorHappened(type, details) {
+            console.log(type, details)
             errorTip.pop(type, details)
         }
     }

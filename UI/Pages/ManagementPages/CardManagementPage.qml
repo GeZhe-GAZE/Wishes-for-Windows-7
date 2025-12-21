@@ -40,4 +40,11 @@ Item {
             top: parent.top
         }
     }
+
+    Image {
+        anchors.centerIn: parent
+        source: "file:///" + backend.image_get_attribute("Genshin", "火")
+        width: 100
+        fillMode: Image.PreserveAspectFit
+    }
 }

@@ -35,4 +35,8 @@ RESIDENT_GROUP_DIR = os.path.join(BASE_DIR, r"Data/StandardGroups")             
 CARD_GROUP_DIR = os.path.join(BASE_DIR, r"Data/CardGroups")                                 # 卡组 配置目录
 LOGIC_CONFIG_DIR = os.path.join(BASE_DIR, r"Data/LogicConfig")                              # 抽卡逻辑 配置目录
 CARD_POOL_DIR = os.path.join(BASE_DIR, r"Data/CardPools")                                   # 卡池 配置目录
-STAR_RARITY_MAP_FILE = os.path.join(BASE_DIR, r"Data/Config/StarRarityMap.json")         # 星级-稀有度 配置文件
+STAR_RARITY_MAP_FILE = os.path.join(BASE_DIR, r"Data/Config/StarRarityMap.json")            # 星级-稀有度 配置文件
+PROFESSION_IMAGE_PATH_CONFIG_FILE = os.path.join(BASE_DIR, r"Data/ImagePathConfig/Profession.json")
+                                                                                            # 职业 图片路径 配置文件
+ATTRIBUTE_IMAGE_PATH_CONFIG_FILE = os.path.join(BASE_DIR, r"Data/ImagePathConfig/Attribute.json")
+                                                                                            # 属性 图片路径 配置文件
