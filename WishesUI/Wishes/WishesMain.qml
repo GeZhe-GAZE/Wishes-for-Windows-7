@@ -90,19 +90,19 @@ Item {
         initTag: "main"
 
         topButtonList: ListModel {
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/main.png"; tag: "main"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/main.png"; tag: "main"; text: "首页"}
         }
 
         centerButtonList: ListModel {
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/management.svg"; tag: "management"}
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/records.svg"; tag: "records"}
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/analysis.svg"; tag: "analysis"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/management.svg"; tag: "management"; text: "管理"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/records.svg"; tag: "records"; text: "抽卡记录"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/analysis.svg"; tag: "analysis"; text: "抽卡分析"}
         }
 
         bottomButtonList: ListModel {
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/settings.png"; tag: "settings"}
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/appearance.png"; tag: "appearance"}
-            ListElement {imageSource_: "../../UI/Icons/NavigationBar/about.png"; tag: "about"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/settings.png"; tag: "settings"; text: "设置"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/appearance.png"; tag: "appearance"; text: "外观"}
+            ListElement {imageSource_: "../../UI/Icons/NavigationBar/about.png"; tag: "about"; text: "关于"}
         }
 
         onCurrentTagChanged: {

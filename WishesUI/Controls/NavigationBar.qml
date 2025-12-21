@@ -9,6 +9,11 @@ import "../Button"
 Item {
     id: root
 
+    property real foldWidth: 60
+    property real unfoldWidth: 200
+    property bool isFolded: true
+    property int foldAnimationDuration: 200
+
     readonly property alias background: background
     property ListModel topButtonList: ListModel {}      // 应包含 string imageSource_, string tag
     property ListModel centerButtonList: ListModel {}
@@ -17,12 +22,12 @@ Item {
     /*
         按钮列表配置演示:
         topButtonList: ListModel {
-            ListElement { imageSource: "UI/Icons/Back.png"; tag: "back" }
-            ListElement { imageSource: "UI/Icons/Forward.png"; tag: "forward" }
-            ListElement { imageSource: "UI/Icons/Refresh.png"; tag: "refresh" }
+            ListElement { imageSource: "UI/Icons/Back.png"; tag: "back"; text: "返回" }
+            ListElement { imageSource: "UI/Icons/Forward.png"; tag: "forward"; text: "前进" }
+            ListElement { imageSource: "UI/Icons/Refresh.png"; tag: "refresh"; text: "刷新" }
         }
         or:
-        topButtonList.append({ imageSource: "UI/Icons/Back.png"; tag: "back" })
+        topButtonList.append({ imageSource: "UI/Icons/Back.png"; tag: "back"; text: "返回" })
     */
 
     property int radius: 0
@@ -45,8 +50,11 @@ Item {
     property real currentTipHeightSize: 0.7
     property real currentTipWidthSize: 0.5
 
-    readonly property real viewHeight: height - 2 * partingLineHeight - 4 * partingLinePadding - 2 * padding
-    readonly property real viewWidth: width - 2 * padding
+    property int unfoldTextFontPointSize: 15
+    property bool unfoldTextFontBold: false
+
+    readonly property real viewHeight: height - unfoldButton.height - 2 * partingLineHeight - 4 * partingLinePadding - 3 * padding
+    readonly property real viewWidth: foldWidth - 2 * padding
     readonly property real buttonHeight: root.viewWidth * root.buttonSize
 
     property var layoutWeights: [1, 1, 1]   // 控制顶部，中部，底部所占区域比例
@@ -76,6 +84,22 @@ Item {
                 return
             }
         }
+    }
+
+    function fold() {
+        if (root.isFolded) {
+            return
+        }
+        root.isFolded = true
+        foldAnimation.start()
+    }
+
+    function unfold() {
+        if (!root.isFolded) {
+            return
+        }
+        root.isFolded = false
+        unfoldAnimation.start()
     }
 
     onCurrentTagChanged: {
@@ -124,13 +148,64 @@ Item {
         color: WishesTheme.current.barColor
     }
 
-    // 列表中包含 string imageSource_, string tag
+    ParallelAnimation {
+        id: foldAnimation
+
+        NumberAnimation {
+            target: root
+            property: "width"
+            to: root.foldWidth
+            duration: root.foldAnimationDuration
+            easing.type: Easing.InOutQuad
+        }
+    }
+
+    ParallelAnimation {
+        id: unfoldAnimation
+
+        NumberAnimation {
+            target: root
+            property: "width"
+            to: root.unfoldWidth
+            duration: root.foldAnimationDuration
+            easing.type: Easing.InOutQuad
+        }
+    }
+
+    ImageButton {
+        id: unfoldButton
+        imageSource: "../Images/navigation_bar_unfold.svg"
+        anchors {
+            top: root.top
+            left: root.left
+            margins: root.padding
+        }
+        width: root.foldWidth - 2 * root.padding
+        height: width
+        radius: width * root.buttonRadiusSize
+
+        colorNormal: root.buttonColorNormal
+        colorHovered: root.buttonColorHovered
+        colorClicked: root.buttonColorToggled
+
+        colorOverlay {
+            enabled: true
+        }
+
+        onClickedLeft: {
+            if (root.isFolded) {
+                root.unfold()
+            } else {
+                root.fold()
+            }
+        }
+    }
 
     ScrollView {
         id: topView
         visible: root.topButtonList.count > 0
         anchors {
-            top: root.top
+            top: unfoldButton.bottom
             left: root.left
             right: root.right
             margins: root.padding
@@ -150,7 +225,9 @@ Item {
                 ToggleImageButton {
                     required property string imageSource_
                     required property string tag
+                    required property string text
 
+                    clip: false
                     width: root.buttonHeight
                     height: width
                     imageSource: imageSource_
@@ -176,6 +253,27 @@ Item {
                         radius: width / 2
                         color: root.currentTipColor
                         x: ((parent.width - parent.imageWidth) / 2 - width) / 2
+                    }
+
+                    Text {
+                        id: unfoldText
+                        //visible: !root.isFolded
+                        anchors {
+                            left: parent.right
+                            verticalCenter: parent.verticalCenter
+                        }
+                        width: root.unfoldWidth - parent.width - 3 * root.padding
+                        x: parent.width + 2 * root.padding
+                        height: parent.height
+                        text: parent.text
+                        color: WishesTheme.current.textColor
+                        font {
+                            family: WishesTheme.fontFamily
+                            pointSize: root.unfoldTextFontPointSize
+                            bold: root.unfoldTextFontBold
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     onToggled: {
@@ -229,6 +327,9 @@ Item {
                 ToggleImageButton {
                     required property string imageSource_
                     required property string tag
+                    required property string text
+
+                    clip: false
 
                     width: root.buttonHeight
                     height: width
@@ -255,6 +356,27 @@ Item {
                         radius: width / 2
                         color: root.currentTipColor
                         x: ((parent.width - parent.imageWidth) / 2 - width) / 2
+                    }
+
+                    Text {
+                        id: unfoldText
+                        //visible: !root.isFolded
+                        anchors {
+                            left: parent.right
+                            verticalCenter: parent.verticalCenter
+                        }
+                        width: root.unfoldWidth - parent.width - 3 * root.padding
+                        x: parent.width + 2 * root.padding
+                        height: parent.height
+                        text: parent.text
+                        color: WishesTheme.current.textColor
+                        font {
+                            family: WishesTheme.fontFamily
+                            pointSize: root.unfoldTextFontPointSize
+                            bold: root.unfoldTextFontBold
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     onToggled: {
@@ -310,6 +432,9 @@ Item {
                 ToggleImageButton {
                     required property string imageSource_
                     required property string tag
+                    required property string text
+
+                    clip: false
 
                     width: root.buttonHeight
                     height: width
@@ -336,6 +461,27 @@ Item {
                         radius: width / 2
                         color: root.currentTipColor
                         x: ((parent.width - parent.imageWidth) / 2 - width) / 2
+                    }
+                    
+                    Text {
+                        id: unfoldText
+                        //visible: !root.isFolded
+                        anchors {
+                            left: parent.right
+                            verticalCenter: parent.verticalCenter
+                        }
+                        width: root.unfoldWidth - parent.width - 3 * root.padding
+                        x: parent.width + 2 * root.padding
+                        height: parent.height
+                        text: parent.text
+                        color: WishesTheme.current.textColor
+                        font {
+                            family: WishesTheme.fontFamily
+                            pointSize: root.unfoldTextFontPointSize
+                            bold: root.unfoldTextFontBold
+                        }
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
                     }
 
                     onToggled: {
