@@ -31,7 +31,8 @@ class StarRarityAdapter:
         self.config_file = config_file
 
         # 管理层级: 游戏 -> 星级(字符串) -> 稀有度映射
-        self.star_rarity_map: Dict[str, Dict[str, str]] = {}
+        self.star_rarity_map: Dict[str, Dict[str, Dict]] = {}
+        self.load()
 
     def load(self):
         """
@@ -45,10 +46,30 @@ class StarRarityAdapter:
         获取星级对应的稀有度映射
         """
         if game not in self.star_rarity_map:
-            return ""
+            raise ValueError(f"StarRarityAdapter.get_rarity: 游戏 '{game}' 不存在")
         if str(star) not in self.star_rarity_map[game]:
-            return ""
-        return self.star_rarity_map[game][str(star)]
+            return str(star)
+        return self.star_rarity_map[game][str(star)]["map"]
+    
+    def get_color(self, game: str, star: int) -> str:
+        """
+        获取星级对应的代表色
+        """
+        if game not in self.star_rarity_map:
+            raise ValueError(f"StarRarityAdapter.get_color: 游戏 '{game}' 不存在")
+        if str(star) not in self.star_rarity_map[game]:
+            return "blue"
+        return self.star_rarity_map[game][str(star)]["color"]
+    
+    def check_using_star(self, game: str, star: int) -> bool:
+        """
+        是否使用星级表示稀有度
+        """
+        if game not in self.star_rarity_map:
+            raise ValueError(f"StarRarityAdapter.check_using_star: 游戏 '{game}' 不存在")
+        if str(star) not in self.star_rarity_map[game]:
+            return True
+        return self.star_rarity_map[game][str(star)]["using_star"]
 
     def add_rarity(self, game: str, star: int, rarity: str):
         """

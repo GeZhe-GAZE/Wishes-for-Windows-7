@@ -34,10 +34,12 @@ __pycache__/
 Data/
 Images/
 ToolScripts/
+TODO.txt
 
 # Image Files
 *.png
 *.svg
+logos/
 
 # Font Files
 *.ttf

@@ -28,7 +28,8 @@ class ProfessionImageManager:
         if game not in self.config:
             raise ValueError(f'ProfessionImageManager: 游戏 {game} 不存在')
         if profession not in self.config[game]:
-            raise ValueError(f'ProfessionImageManager: 职业 {profession} 不存在')
+            return ""
+        #     raise ValueError(f'ProfessionImageManager: 职业 {profession} 不存在')
         path = "/".join([BASE_DIR, self.config[game][profession]])
         if not os.path.exists(path):
             raise FileNotFoundError(f'ProfessionImageManager: 职业 {profession} 的图像文件不存在: {path}')
@@ -44,7 +45,8 @@ class AttributeImageManager:
         if game not in self.config:
             raise ValueError(f'AttributeImageManager: 游戏 {game} 不存在')
         if attribute not in self.config[game]:
-            raise ValueError(f'AttributeImageManager: 属性 {attribute} 不存在')
+            return ""
+        #     raise ValueError(f'AttributeImageManager: 属性 {attribute} 不存在')
         path = os.path.join(BASE_DIR, self.config[game][attribute])
         if not os.path.exists(path):
             raise FileNotFoundError(f'AttributeImageManager: 属性 {attribute} 的图像文件不存在: {path}')

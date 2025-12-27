@@ -19,7 +19,7 @@ from Base import *
 from CardPool import CardPool
 from WishRule import WishLogic
 from WishRule import WishLogic
-from typing import Dict, List, Sequence
+from typing import Dict, List, Sequence, Tuple
 
 
 class CardSystem:
@@ -183,6 +183,14 @@ class CardSystem:
             for type_ in group.keys():
                 if type_ not in res:
                     res.append(type_)
+        
+        return res
+    
+    def game_star_info(self) -> List[Tuple[str, int]]:
+        res = []
+        for game in self.card_container.keys():
+            for star, _ in self.card_container[game].values():
+                res.append((game, star))
         
         return res
     

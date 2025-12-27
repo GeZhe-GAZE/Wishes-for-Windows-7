@@ -94,13 +94,15 @@ class PackedCard:
     对卡片的二次封装，用于在抽卡时使用
     """
     def __init__(self, card: Card, real_tag: str = TAG_STANDARD, tags: List[str] = [TAG_STANDARD], rarity: str = ""):
-        self.card = card            # 卡片对象
-        self.real_tag = real_tag    # 卡片被抽出时，所属的标签组
-        self.tags = tags            # 卡片所属的所有标签组
-        self.rarity = rarity        # 卡片稀有度映射
+        self.card = card                # 卡片对象
+        self.real_tag = real_tag        # 卡片被抽出时，所属的标签组
+        self.tags = tags                # 卡片所属的所有标签组
+        self.rarity = rarity            # 卡片稀有度映射
+        self.rarity_using_star = True   # 是否使用星级表示稀有度
+        self.rarity_color = ""          # 稀有度代表色
 
     def __str__(self) -> str:
-        return f"PackedCard({self.card}, {self.real_tag}, {self.tags}, {self.rarity})"
+        return f"PackedCard({self.card}, {self.real_tag}, {self.tags}, {self.rarity}, {self.rarity_using_star}"
 
 
 class SingleTagCardGroup:

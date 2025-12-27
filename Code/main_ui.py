@@ -2,7 +2,7 @@ from PySide2.QtCore import QUrl
 from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
 from PySide2.QtGui import QGuiApplication
 from WishesBackend import Backend
-from WishesQmlAPI import QCard, QCardPool, QWishResult
+from WishesQmlAPI import QCard, QCardPool, QWishResult, CardQueryParams
 import sys
 
 
@@ -14,6 +14,7 @@ def registerWishesType():
     qmlRegisterType(QCardPool, "Wishes", 1, 0, "QCardPool") # type: ignore
     qmlRegisterType(QWishResult, "Wishes", 1, 0,"QWishResult") # type: ignore
     qmlRegisterType(Backend, "Wishes", 1, 0, "Backend") # type: ignore
+    qmlRegisterType(CardQueryParams, "Wishes", 1, 0, "CardQueryParams") # type: ignore
 
 
 def main():
