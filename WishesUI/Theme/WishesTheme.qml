@@ -23,7 +23,7 @@ Item {
         shadowOpacity:   0.7
 
         // 交互组件
-        buttonColor:     "#e1e1e2"   
+        buttonColor:     "#ddddde"   
         hoveredColor:    "#d1d1d2"   
         clickedColor:    "#bcbbbe"   
         toggledColor:    "#3c3b3e"   

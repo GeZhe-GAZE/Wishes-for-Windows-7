@@ -192,6 +192,8 @@ Item {
             enabled: true
         }
 
+        unenbledOverlay.visible: false
+
         onClickedLeft: {
             if (root.isFolded) {
                 root.unfold()

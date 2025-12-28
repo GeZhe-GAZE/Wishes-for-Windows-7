@@ -58,7 +58,7 @@ class CardSystem:
     
     def get_card(
             self,
-            content: str,         # 指定卡片内容进行查找
+            content: Optional[str] = None, # 指定卡片内容进行查找
             game: Optional[str] = None,    # 通过指定更多信息进行快速查找
             type_: Optional[str] = None,
             star: Optional[int] = None
@@ -189,8 +189,9 @@ class CardSystem:
     def game_star_info(self) -> List[Tuple[str, int]]:
         res = []
         for game in self.card_container.keys():
-            for star, _ in self.card_container[game].values():
-                res.append((game, star))
+            for type_group in self.card_container[game].values():
+                for star in type_group.keys():
+                    res.append((game, star))
         
         return res
     

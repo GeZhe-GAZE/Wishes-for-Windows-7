@@ -86,6 +86,7 @@ Item {
         }
         width: 60
         layoutWeights: [1, 2, 1]
+        enabled: !switchView.busy
 
         initTag: "main"
 

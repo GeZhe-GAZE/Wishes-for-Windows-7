@@ -17,12 +17,29 @@ Item {
     property string currentFilterType: ""
     property string currentFilterRarity: ""
 
+    property QCard currentCard
+
     Component.onCompleted: {
-        // snycCardList()
-        snycGameList()
+        syncCardList()
+        syncGameList()
+        syncTypeList()
+        syncRarityList()
     }
 
-    function snycGameList() {
+    // function filterCardList() {
+    //     cardList.clear()
+    //     var lst = backend.card_system_get_card_list()
+    //     for (var i = 0; i < lst.length; i++) {
+    //         if (currentFilterGame != "" && lst[i].game != currentFilterGame) continue
+    // }
+
+    function updateCardInfo() {
+        if (!currentCard) return
+        var imageSource = backend.image_get_card(currentCard.imageSource)
+        cardImage.source = imageSource == "" ? "" : "file:///" + imageSource
+    }
+
+    function syncGameList() {
         gameList.clear()
         var lst = backend.card_system_get_game_list()
         for (var i = 0; i < lst.length; i++) {
@@ -30,7 +47,23 @@ Item {
         }
     }
 
-    function snycCardList() {
+    function syncTypeList() {
+        typeList.clear()
+        var lst = backend.card_system_get_type_list()
+        for (var i = 0; i < lst.length; i++) {
+            typeList.append({tag: lst[i]})
+        }
+    }
+
+    function syncRarityList() {
+        rarityList.clear()
+        var lst = backend.card_system_get_rarity_list()
+        for (var i = 0; i < lst.length; i++) {
+            rarityList.append({tag: lst[i]})
+        }
+    }
+
+    function syncCardList() {
         cardList.clear()
         var lst = backend.card_system_get_card_list()
         for (var i = 0; i < lst.length; i++) {
@@ -47,10 +80,35 @@ Item {
         anchors {
             top: parent.top
             left: parent.left
-            right: parent.right
-            rightMargin: root.toggleGroupWidth + 20
+            right: cardInfoArea.left
+            rightMargin: 10
         }
-        height: 200
+        height: 40
+
+        property bool isUnfolded: true
+
+        ImageButton {
+            id: unfoldButton
+            anchors {
+                top: parent.top
+                left: parent.left
+            }
+            width: height
+            height: currentFilterArea.height
+            imageSource: filterArea.isUnfolded ? "../../UI/Icons/CardManagementPage/down.svg" 
+                                               : "../../UI/Icons/CardManagementPage/up.svg"
+            radius: 5
+
+            onClickedLeft: {
+                if (filterArea.isUnfolded) {
+                    filterArea.height = 200
+                    filterArea.isUnfolded = false
+                } else {
+                    filterArea.height = currentFilterArea.height
+                    filterArea.isUnfolded = true
+                }
+            }
+        }
 
         property real leftTextWidth: 100
 
@@ -58,8 +116,9 @@ Item {
             id: currentFilterArea
             anchors {
                 top: parent.top
-                left: parent.left
+                left: unfoldButton.right
                 right: parent.right
+                leftMargin: 5
             }
             height: 40
 
@@ -82,6 +141,25 @@ Item {
                 verticalAlignment: Text.AlignVCenter
             }
 
+            Text {
+                visible: root.currentFilterGame == "" && root.currentFilterType == "" && root.currentFilterRarity == ""
+                text: "无"
+                color: WishesTheme.current.textColor
+                anchors {
+                    left: fixedFilterText1.right
+                    right: parent.right
+                }
+                height: parent.height
+                font {
+                    family: WishesTheme.fontFamily
+                    pointSize: 100
+                }
+                fontSizeMode: Text.Fit
+                minimumPointSize: 5
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+
             Row {
                 anchors {
                     left: fixedFilterText1.right
@@ -90,6 +168,7 @@ Item {
                     bottom: parent.bottom
                     right: parent.right
                 }
+                spacing: 5
                 
                 Rectangle {
                     visible: root.currentFilterGame != ""
@@ -117,23 +196,56 @@ Item {
                 
                 Rectangle {
                     visible: root.currentFilterType != ""
-                    radius: 10
+                    radius: 5
                     width: 100
                     height: parent.height
                     color: WishesTheme.current.toggledColor
+
+                    Text {
+                        anchors.fill: parent
+                        anchors.margins: 7
+                        text: root.currentFilterType
+                        color: WishesTheme.current.textActiveColor
+                        font {
+                            pointSize: 100
+                            family: WishesTheme.fontFamily
+                            bold: true
+                        }
+                        fontSizeMode: Text.Fit
+                        minimumPointSize: 5
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
 
                 Rectangle {
                     visible: root.currentFilterRarity != ""
-                    radius: 10
+                    radius: 5
                     width: 100
                     height: parent.height
                     color: WishesTheme.current.toggledColor
+
+                    Text {
+                        anchors.fill: parent
+                        anchors.margins: 7
+                        text: root.currentFilterRarity
+                        color: WishesTheme.current.textActiveColor
+                        font {
+                            pointSize: 100
+                            family: WishesTheme.fontFamily
+                            bold: true
+                        }
+                        fontSizeMode: Text.Fit
+                        minimumPointSize: 5
+                        horizontalAlignment: Text.AlignHCenter
+                        verticalAlignment: Text.AlignVCenter
+                    }
                 }
             }
         }
 
         Column {
+            visible: !filterArea.isUnfolded
             anchors {
                 top: currentFilterArea.bottom
                 bottom: parent.bottom
@@ -150,8 +262,11 @@ Item {
                     color: WishesTheme.current.textColor
                     anchors {
                         left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
+                        topMargin: 10
+                        bottomMargin: 10
                     }
-                    height: parent.height
                     width: filterArea.leftTextWidth
                     font {
                         family: WishesTheme.fontFamily
@@ -167,16 +282,107 @@ Item {
                     anchors {
                         top: parent.top
                         left: fixedFilterText2.right
-                        leftMargin: 5
                         right: parent.right
                     }
                     height: parent.height
+                    clip: true
+                    uncheckByMouse: true
                     model: ListModel {
                         id: gameList
                     }
 
                     onCurrentTagChanged: {
                         root.currentFilterGame = currentTag
+                    }
+                }
+            }
+
+            Item {
+                height: (parent.height - 3 * parent.spacing) / 3
+                width: parent.width
+
+                Text {
+                    id: fixedFilterText3
+                    text: "类型"
+                    color: WishesTheme.current.textColor
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
+                        topMargin: 10
+                        bottomMargin: 10
+                    }
+                    width: filterArea.leftTextWidth
+                    font {
+                        family: WishesTheme.fontFamily
+                        pointSize: 100
+                    }
+                    fontSizeMode: Text.Fit
+                    minimumPointSize: 5
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                ScrollToggleGroup {
+                    anchors {
+                        top: parent.top
+                        left: fixedFilterText3.right
+                        right: parent.right
+                    }
+                    height: parent.height
+                    clip: true
+                    uncheckByMouse: true
+                    model: ListModel {
+                        id: typeList
+                    }
+
+                    onCurrentTagChanged: {
+                        root.currentFilterType = currentTag
+                    }
+                }
+            }
+
+            Item {
+                height: (parent.height - 3 * parent.spacing) / 3
+                width: parent.width
+
+                Text {
+                    id: fixedFilterText4
+                    text: "稀有度"
+                    color: WishesTheme.current.textColor
+                    anchors {
+                        left: parent.left
+                        top: parent.top
+                        bottom: parent.bottom
+                        topMargin: 10
+                        bottomMargin: 10
+                    }
+                    width: filterArea.leftTextWidth
+                    font {
+                        family: WishesTheme.fontFamily
+                        pointSize: 100
+                    }
+                    fontSizeMode: Text.Fit
+                    minimumPointSize: 5
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
+                }
+
+                ScrollToggleGroup {
+                    anchors {
+                        top: parent.top
+                        left: fixedFilterText4.right
+                        right: parent.right
+                    }
+                    height: parent.height
+                    clip: true
+                    uncheckByMouse: true
+                    model: ListModel {
+                        id: rarityList
+                    }
+
+                    onCurrentTagChanged: {
+                        root.currentFilterRarity = currentTag
                     }
                 }
             }
@@ -192,10 +398,11 @@ Item {
             bottom: parent.bottom
             topMargin: 10
         }
+        clip: true
 
         Grid {
             id: layout
-            width: cardView.width
+            width: cardView.width - 10
             spacing: 10
             columns: 4
             
@@ -221,6 +428,27 @@ Item {
         id: cardInfoArea
         anchors {
             top: parent.top
+            bottom: parent.bottom
+            right: parent.right
+        }
+        width: root.width * 0.35
+
+        Rectangle {
+            anchors.fill: parent
+            color: WishesTheme.current.rectangleColor
+            radius: 10
+        }
+
+        Image {
+            id: cardImage
+            anchors {
+                top: parent.top
+                left: parent.left
+                right: parent.right
+                margins: 10
+            }
+            height: width
+            fillMode: Image.PreserveAspectFit
         }
     }
 

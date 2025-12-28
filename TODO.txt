@@ -1,1 +1,8 @@
 ﻿1. CardPoolRectangle 上浮文本
+2. Wishes Logo [done]
+3. 卡片管理界面
+4. 官方卡池信息自动同步
+5. 统一抽卡分析评价标准
+6. 游戏字体
+7. Card CardGroup CardPool Logic Tag 图标
+8. Rarity 文本与图片的选择性显示

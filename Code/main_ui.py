@@ -1,6 +1,6 @@
 from PySide2.QtCore import QUrl
 from PySide2.QtQml import QQmlApplicationEngine, qmlRegisterType
-from PySide2.QtGui import QGuiApplication
+from PySide2.QtGui import QGuiApplication, QIcon
 from WishesBackend import Backend
 from WishesQmlAPI import QCard, QCardPool, QWishResult, CardQueryParams
 import sys
@@ -16,9 +16,10 @@ def registerWishesType():
     qmlRegisterType(Backend, "Wishes", 1, 0, "Backend") # type: ignore
     qmlRegisterType(CardQueryParams, "Wishes", 1, 0, "CardQueryParams") # type: ignore
 
-
+  
 def main():
     app = QGuiApplication(sys.argv)
+    app.setWindowIcon(QIcon("Wishes.ico"))
     engine = QQmlApplicationEngine()
     registerWishesType()
 

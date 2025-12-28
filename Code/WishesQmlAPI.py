@@ -8,6 +8,7 @@ from CardPool import CardPool
 Property = cast(type, Property)     # 使 vscode 的类型检查能正确识别 Property 修饰器
 Slot = cast(type, Slot)
 
+
 @dataclass
 class CardQueryParams(QObject):
     _content: Optional[str] = None
@@ -158,7 +159,7 @@ class QCard(QObject):
         return self.packed_card.card.profession
     
     @Property(str, notify=imagePathChanged)
-    def image_path(self) -> str:
+    def imagePath(self) -> str:
         return self.packed_card.card.image_path
     
     @Property(str, notify=tagChanged)

@@ -24,6 +24,8 @@ Item {
     }
     property string currentTag: ""
 
+    property bool uncheckByMouse: false
+
     function _uncheck() {
         for (var i = 0; i < model.count; i++) {
             if (model.get(i).tag != currentTag) {
@@ -56,9 +58,15 @@ Item {
                     fontPointSize: root.fontPointSize
                     fontBold: root.fontBold
 
+                    uncheckable: root.uncheckByMouse
+
                     onToggled: {
                         root.currentTag = tag
                         root._uncheck()
+                    }
+
+                    onUncheckedByMouse: {
+                        root.currentTag = ""
                     }
                 }
             }

@@ -41,6 +41,7 @@ Item {
 
     signal toggled()
     signal unchecked()
+    signal uncheckedByMouse()
 
     state: "common"
     states: [
@@ -174,6 +175,7 @@ Item {
             } else if (root.uncheckable) {
                 parent.isToggled = false
                 parent.state = "hovered"
+                root.uncheckedByMouse()
                 root.unchecked()
             }
         }

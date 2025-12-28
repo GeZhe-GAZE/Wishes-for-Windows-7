@@ -6,6 +6,8 @@ import "../Theme"
 Item {
     id: root
 
+    property alias unenbledOverlay: unenabledOverlayRect
+
     // 图片
     property string imageSource: ""
     property real imageWidth: width * 0.7

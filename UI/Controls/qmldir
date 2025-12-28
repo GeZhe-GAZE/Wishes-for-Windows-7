@@ -1,0 +1,2 @@
+singleton ControlsConfig 1.0 ControlsConfig.qml
+singleton GameFontLoader 1.0 GameFontLoader.qml

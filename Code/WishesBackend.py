@@ -96,6 +96,18 @@ class Backend(QObject):
 
         return ""
     
+    @Slot(str, result=str)
+    def image_get_card(self, relative_image_path: str) -> str:
+        try:
+            path = os.path.join(BASE_DIR, relative_image_path)
+            if os.path.exists(path):
+                return path
+        except:
+            msg = traceback.format_exc()
+            self.errorHappened.emit("图像获取错误", msg) # type: ignore
+        
+        return ""
+    
     @Slot(str, int, result=bool)
     def adapter_check_using_star(self, game, star) -> bool:
         try:
@@ -153,7 +165,7 @@ class Backend(QObject):
             
         except:
             msg = traceback.format_exc()
-            self.errorHappened.emit("", msg)
+            self.errorHappened.emit("", msg) # type: ignore
         
         return []
     
@@ -161,10 +173,13 @@ class Backend(QObject):
     def card_system_get_card_list(self) -> List[QCard]:
         try:
             cards = self.card_system.get_cards()
-            return [
-                QCard(PackedCard(card), self)
-                for card in cards
-            ]
+            res = []
+            for card in cards:
+                packed_card = PackedCard(card)
+                packed_card.rarity_using_star = self.star_rarity_adapter.check_using_star(card.game, card.star)
+                packed_card.rarity = self.star_rarity_adapter.get_rarity(card.game, card.star)
+                res.append(QCard(packed_card, self))
+            return res
         except:
             msg = traceback.format_exc()
             self.errorHappened.emit("获取卡片列表错误", msg) # type: ignore
@@ -206,19 +221,19 @@ class Backend(QObject):
         
         return []
     
-    @Slot(QCardPool, result=QWishResult)
-    def card_pool_wish_one(self, q_card_pool: QCardPool) -> QWishResult:
-        try:
-            card_pool = q_card_pool.card_pool
-            result = card_pool.wish_one()
-            packed_card = result.get_one()
-            card = packed_card.card
-            packed_card.rarity_using_star = self.star_rarity_adapter.check_using_star(card.game, card.star)
-            packed_card.rarity = self.star_rarity_adapter.get_rarity(card.game, card.star)
+    # @Slot(QCardPool, result=QWishResult)
+    # def card_pool_wish_one(self, q_card_pool: QCardPool) -> QWishResult:
+    #     try:
+    #         card_pool = q_card_pool.card_pool
+    #         result = card_pool.wish_one()
+    #         packed_card = result.get_one()
+    #         card = packed_card.card
+    #         packed_card.rarity_using_star = self.star_rarity_adapter.check_using_star(card.game, card.star)
+    #         packed_card.rarity = self.star_rarity_adapter.get_rarity(card.game, card.star)
             
-        except:
-            msg = traceback.format_exc()
-            self.errorHappened.emit(f"卡池 '{card_pool.name}': 抽卡时错误", msg)
+    #     except:
+    #         msg = traceback.format_exc()
+    #         self.errorHappened.emit(f"卡池 '{card_pool.name}': 抽卡时错误", msg) # type: ignore
     
 
 
