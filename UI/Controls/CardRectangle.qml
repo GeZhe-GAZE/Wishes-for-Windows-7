@@ -24,11 +24,20 @@ Item {
         attributeImage.source = attributeImagePath == "" ? "" : "file:///" + attributeImagePath
         var professionImagePath = backend.image_get_profession(card.game, card.profession)
         professionImage.source = professionImagePath == "" ? "" : "file:///" + professionImagePath
-        starRarity.visible = backend.adapter_check_using_star(card.game, card.star)
-        starText.text = card.star
-        rarityText.text = card.rarity
-        contentText.text = card.content
+        
+        var rarityImagePath = backend.image_get_rarity(card.game, card.star)
+        if (rarityImagePath != "") {
+            rarityImage.visible = true
+            rarityImage.source = "file:///" + rarityImagePath
+            starRarity.visible = false
+            starText.visible = false
+        } else {
+            starRarity.visible = backend.adapter_check_using_star(card.game, card.star)
+            starText.text = card.star
+            rarityText.text = card.rarity
+        }
 
+        contentText.text = card.content
         var contentImagePath = backend.image_get_card(card.imagePath)
         contentImage.source = contentImagePath == "" ? "" : "file:///" + contentImagePath
     }
@@ -124,7 +133,7 @@ Item {
 
     Text {
         id: rarityText
-        visible: !starRarity.visible
+        visible: false
         anchors {
             top: parent.top
             right: parent.right
@@ -141,6 +150,19 @@ Item {
             family: WishesTheme.fontFamily
             pointSize: 50
         }
+    }
+
+    Image {
+        id: rarityImage
+        anchors {
+            top: parent.top
+            right: parent.right
+            margins: 5
+        }
+        width: height
+        height: Math.min(parent.width * root.iconSize, 30)
+        fillMode: Image.PreserveAspectFit
+        mipmap: true
     }
 
     Rectangle {

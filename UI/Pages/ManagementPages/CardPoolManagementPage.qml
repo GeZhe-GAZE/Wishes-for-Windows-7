@@ -8,7 +8,4 @@ import "../../../WishesUI/Theme"
 
 Item {
     id: root
-    
-    property real toggleGroupWidth: 0
-    property real toggleGroupHeight: 0
 }

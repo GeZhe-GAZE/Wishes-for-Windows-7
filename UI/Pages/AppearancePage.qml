@@ -5,6 +5,7 @@ import "../../WishesUI/Base"
 import "../../WishesUI/Button"
 import "../../WishesUI/Controls"
 import "../../WishesUI/Theme"
+import "../../UI/GameFonts"
 
 Item {
     id: root
@@ -64,7 +65,7 @@ Item {
             bottom: parent.bottom
             topMargin: 10
         }
-        contentHeight: contentLayout.children.length * (root.itemRectHeight + contentLayout.spacing)
+        //contentHeight: contentLayout.children.length * (root.itemRectHeight + contentLayout.spacing)
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
         Column {
@@ -168,12 +169,183 @@ Item {
                         WishesTheme.fontFamily = currentText
                     }
 
+                    onPopupClicked: {
+                        WishesTheme.fontFamily = currentText
+                    }
+
                     Component.onCompleted: {
                         var lst = Qt.fontFamilies()
                         for (var i = 0; i < lst.length; i++) {
                             fontFamilyList.append({modelData: lst[i]})
                         }
                         switchItemText("Smiley Sans")
+                    }
+                }
+            }
+
+            WRectangle {
+                width: parent.width
+                height: 200
+                radius: 10
+                
+                Text {
+                    id: fixedText1
+                    text: "内置游戏字体"
+                    color: WishesTheme.current.textColor
+                    anchors {
+                        top: parent.top
+                        left: parent.left
+                        margins: 10
+                    }
+                    font {
+                        pointSize: 25
+                        family: WishesTheme.fontFamily
+                    }
+                }
+
+                Column {
+                    anchors {
+                        top: fixedText1.bottom
+                        left: parent.left
+                        right: parent.right
+                        bottom: parent.bottom
+                        margins: 5
+                    }
+                    spacing: 5
+
+                    Item {
+                        height: (parent.height - parent.spacing * 3) / 4
+                        width: parent.width
+
+                        Text {
+                            text: "原神 - 汉仪文黑-85W"
+                            color: WishesTheme.current.textColor
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                left: parent.left
+                                leftMargin: 10
+                            }
+                            font {
+                                pointSize: 25
+                                family: GenshinFontLoader.name
+                            }
+                        }
+
+                        ToggleTextButton {
+                            id: applyGenshinFontButton
+                            text: WishesTheme.fontFamily == GenshinFontLoader.name ?
+                                    "已启用" : "启用"
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                            }
+                            height: parent.height * 0.8
+                            width: 100
+                            radius: 5
+
+                            onToggled: {
+                                WishesTheme.fontFamily = GenshinFontLoader.name
+                            }
+
+                            Connections {
+                                target: WishesTheme
+                                function onFontFamilyChanged() {
+                                    if (WishesTheme.fontFamily != GenshinFontLoader.name) {
+                                        applyGenshinFontButton.uncheck()
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Item {
+                        height: (parent.height - parent.spacing * 3) / 4
+                        width: parent.width
+
+                        Text {
+                            text: "崩坏：星穹铁道 - 汉仪润圆-75W"
+                            color: WishesTheme.current.textColor
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                left: parent.left
+                                leftMargin: 10
+                            }
+                            font {
+                                pointSize: 25
+                                family: StarRailFontLoader.name
+                            }
+                        }
+
+                        ToggleTextButton {
+                            id: applyStarRailFontButton
+                            text: WishesTheme.fontFamily == StarRailFontLoader.name ?
+                                    "已启用" : "启用"
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                            }
+                            height: parent.height * 0.8
+                            width: 100
+                            radius: 5
+
+                            onToggled: {
+                                WishesTheme.fontFamily = StarRailFontLoader.name
+                            }
+
+                            Connections {
+                                target: WishesTheme
+                                function onFontFamilyChanged() {
+                                    if (WishesTheme.fontFamily != StarRailFontLoader.name) {
+                                        applyStarRailFontButton.uncheck()
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    Item {
+                        height: (parent.height - parent.spacing * 3) / 4
+                        width: parent.width
+
+                        Text {
+                            text: "绝区零 - 印品鸿蒙体"
+                            color: WishesTheme.current.textColor
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                left: parent.left
+                                leftMargin: 10
+                            }
+                            font {
+                                pointSize: 25
+                                family: ZZZFontLoader.name
+                            }
+                        }
+
+                        ToggleTextButton {
+                            id: applyZZZFontButton
+                            text: WishesTheme.fontFamily == ZZZFontLoader.name ?
+                                    "已启用" : "启用"
+                            anchors {
+                                verticalCenter: parent.verticalCenter
+                                right: parent.right
+                            }
+                            height: parent.height * 0.8
+                            width: 100
+                            radius: 5
+
+                            onToggled: {
+                                WishesTheme.fontFamily = ZZZFontLoader.name
+                            }
+
+                            Connections {
+                                target: WishesTheme
+                                function onFontFamilyChanged() {
+                                    if (WishesTheme.fontFamily != ZZZFontLoader.name) {
+                                        applyZZZFontButton.uncheck()
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }

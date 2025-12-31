@@ -1,0 +1,3 @@
+singleton GenshinFontLoader 1.0 GenshinFontLoader.qml
+singleton StarRailFontLoader 1.0 StarRailFontLoader.qml
+singleton ZZZFontLoader 1.0 ZZZFontLoader.qml

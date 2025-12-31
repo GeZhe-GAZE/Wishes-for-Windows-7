@@ -10,17 +10,21 @@ import "../../../UI/Controls"
 Item {
     id: root
 
-    property real toggleGroupWidth: 0
-    property real toggleGroupHeight: 0
-
     property string currentFilterGame: ""
     property string currentFilterType: ""
     property string currentFilterRarity: ""
 
     property QCard currentCard
+    property Item currentCardItem
+
+    property int currentCardRow: -1
+    property int currentCardColumn: -1
+
+    property real cardRectWidth: (layout.width - 3 * layout.spacing) / layout.columns
+    property real cardRectHeight: cardRectWidth * 1.8
 
     Component.onCompleted: {
-        syncCardList()
+        // syncCardList()
         syncGameList()
         syncTypeList()
         syncRarityList()
@@ -149,7 +153,7 @@ Item {
                     left: fixedFilterText1.right
                     right: parent.right
                 }
-                height: parent.height
+                height: parent.height * 0.8
                 font {
                     family: WishesTheme.fontFamily
                     pointSize: 100
@@ -400,6 +404,16 @@ Item {
         }
         clip: true
 
+        Rectangle {
+            id: currentCardTip
+            color: "blue"
+            opacity: 0.4
+            x: root.currentCardItem.x + (root.currentCardItem.width - width) / 2
+            y: root.currentCardItem.y + (root.currentCardItem.height - height) / 2
+            width: cardRectWidth * 1.1
+            height: cardRectHeight * 1.1
+        }
+
         Grid {
             id: layout
             width: cardView.width - 10
@@ -411,13 +425,29 @@ Item {
                 model: cardList
 
                 CardRectangle {
+                    id: cardRect
                     required property QCard modelData
+                    required property int index
                     card: modelData
-                    width: (layout.width - 3 * layout.spacing) / layout.columns
-                    height: width * 1.8
+                    width: root.cardRectWidth
+                    height: root.cardRectHeight
 
                     Component.onCompleted: {
                         load()
+                    }
+
+                    MouseArea {
+                        anchors.fill: parent
+                        acceptedButtons: Qt.LeftButton
+                        propagateComposedEvents: true
+
+                        onClicked: (mouse) => {
+                            root.currentCard = card
+                            root.currentCardColumn = index % layout.columns
+                            root.currentCardRow = parseInt(index / layout.columns)
+                            root.currentCardItem = parent
+                            //mouse.accepted = false
+                        }
                     }
                 }
             }

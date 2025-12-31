@@ -51,3 +51,19 @@ class AttributeImageManager:
         if not os.path.exists(path):
             raise FileNotFoundError(f'AttributeImageManager: 属性 {attribute} 的图像文件不存在: {path}')
         return path
+
+
+class RarityImageManager:
+    def __init__(self, config_file: str) -> None:
+        with open(config_file, "r", encoding="utf-8") as f:
+            self.config = json.load(f)
+    
+    def get_path(self, game: str, rarity: str) -> str:
+        if game not in self.config:
+            raise ValueError(f"RarityImageManager: 游戏 {game} 不存在")
+        if rarity not in self.config[game]:
+            return ""
+        
+        path = os.path.join(BASE_DIR, self.config[game][rarity])
+        if not os.path.exists(path):
+            raise FileNotFoundError(f"RarityImageManager: 稀有度图像文件不存在: {path}")

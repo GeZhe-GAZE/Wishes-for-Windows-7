@@ -42,6 +42,14 @@ Item {
             ListElement {text: "逻辑"}
             ListElement {text: "卡池"}
         }
+
+        onCurrentIndexChanged: {
+            view.switchItem(currentIndex)
+        }
+
+        Component.onCompleted: {
+            check(0)
+        }
     }
 
     SwitchView {
@@ -64,29 +72,21 @@ Item {
         CardManagementPage {
             id: cardManagementPage
             property string tag: "card"
-            toggleGroupWidth: toggleGroup.width
-            toggleGroupHeight: toggleGroup.height
         }
 
         CardGroupManagementPage {
             id: cardGroupManagementPage
             property string tag: "card-group"
-            toggleGroupWidth: toggleGroup.width
-            toggleGroupHeight: toggleGroup.height
         }
 
         WishLogicManagementPage {
             id: wishLogicManagementPage
             property string tag: "logic"
-            toggleGroupWidth: toggleGroup.width
-            toggleGroupHeight: toggleGroup.height
         }
 
         CardPoolManagementPage {
             id: cardPoolManagementPage
             property string tag: "card-pool"
-            toggleGroupWidth: toggleGroup.width
-            toggleGroupHeight: toggleGroup.height
         }
     }
 }

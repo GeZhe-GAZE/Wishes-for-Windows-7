@@ -17,6 +17,8 @@ Item {
 
     property real padding: 4
 
+    signal popupClicked()
+
     function switchItem(index) {
         view.itemAtIndex(index).check()
         view.positionViewAtIndex(i, ListView.Beginning)
@@ -158,6 +160,7 @@ Item {
                     root.currentIndex = index
                     root.currentText = item.modelData
                     popup.close()
+                    root.popupClicked()
                 }
 
                 function check() {

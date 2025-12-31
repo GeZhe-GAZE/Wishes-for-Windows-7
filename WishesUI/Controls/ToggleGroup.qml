@@ -24,7 +24,11 @@ Item {
     }
     property Repeater repeater
 
-    function check(index) {}
+    function check(index) {
+        if (index < 0 || index >= model.count) return
+        repeater.itemAt(index).check()
+    }
+
     function checkText(index) {}
     function uncheck() {}
     

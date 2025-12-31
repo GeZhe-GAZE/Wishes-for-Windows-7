@@ -42,6 +42,7 @@ class Backend(QObject):
 
             self.profession_image_manager = ProfessionImageManager(PROFESSION_IMAGE_PATH_CONFIG_FILE)
             self.attribute_image_manager = AttributeImageManager(ATTRIBUTE_IMAGE_PATH_CONFIG_FILE)
+            self.rarity_image_manager = RarityImageManager(RARITY_IMAGE_PATH_CONFIG_FILE)
 
         except:
             print("Backend Error:")
@@ -94,6 +95,21 @@ class Backend(QObject):
             msg = traceback.format_exc()
             self.errorHappened.emit("图像获取错误", msg) # type: ignore
 
+        return ""
+
+    @Slot(str, int, result=str)
+    def image_get_rarity(self, game: str, star: int) -> str:
+        try:
+            rarity = self.star_rarity_adapter.get_rarity(game, star)
+            return self.rarity_image_manager.get_path(game, rarity)
+        except ValueError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except FileNotFoundError as e:
+            self.errorHappened.emit("图像获取错误", str(e)) # type: ignore
+        except:
+            msg = traceback.format_exc()
+            self.errorHappened.emit("图像获取错误", msg) # type: ignore
+        
         return ""
     
     @Slot(str, result=str)
