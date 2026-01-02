@@ -8,10 +8,18 @@ import "../WishesUI/Theme"
 Window {
     id: main
 
-    title: "Wishes " + backend.version
+    title: "Wishes v" + backend.version
 
     width: UIConfig.windowLoadingWidth
     height: UIConfig.windowLoadingHeight
+
+    onWidthChanged: {
+        console.log("W", width)
+    }
+
+    onHeightChanged: {
+        console.log("H", height)
+    }
 
     Component.onCompleted: {
         show()
@@ -62,6 +70,9 @@ Window {
                 loadTimer.stop()
                 //errorTip.pop("Test", "content")
                 //sucMsgBox.pop(SucMessageBox.Hints.SUCCESS, "测试成功信息", "")
+
+                main.minimumWidth = UIConfig.windowMinWidth
+                main.minimumHeight = UIConfig.windowMinHeight
             }
         }
     }

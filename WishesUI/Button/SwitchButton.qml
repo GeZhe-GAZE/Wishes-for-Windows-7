@@ -4,6 +4,8 @@ import "../Theme"
 Item {
     id: root
 
+    width: textTip.width + buttonRect.width + 10
+
     readonly property alias text: textTip
     readonly property alias buttonBackground: buttonRect
     readonly property alias thumb: buttonCircle
@@ -11,7 +13,7 @@ Item {
     property bool textUsabled: true
     property string textOn: "On"
     property string textOff: "Off"
-    property string fontFamily: WishesTheme.textFamily
+    property string fontFamily: WishesTheme.fontFamily
     property color fontColorOn: WishesTheme.current.textColor
     property color fontColorOff: WishesTheme.current.textColor
 
@@ -35,6 +37,14 @@ Item {
     property int textPlace: SwitchButton.PlaceHints.TextOnLeft
 
     signal clicked()
+
+    function check() {
+        isOn = true
+    }
+
+    function uncheck() {
+        isOn = false
+    }
 
     state: "off"
     states: [
@@ -163,7 +173,7 @@ Item {
             }
         }
 
-        width: root.textUsabled ? parent.width / 3 * 2 : parent.width
+        width: height * 2
 
         Rectangle {
             id: buttonRect
@@ -185,14 +195,14 @@ Item {
 
     MouseArea {
         id: mouseArea
-        anchors.fill: parent
+        anchors.fill: buttonArea
         hoverEnabled: true
 
         acceptedButtons: Qt.LeftButton
 
         onClicked: {
-            parent.clicked()
             root.isOn = !root.isOn
+            parent.clicked()
         }
 
         onEntered: {

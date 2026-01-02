@@ -106,7 +106,7 @@ Item {
 
     Text {
         id: versionText
-        text: backend.version
+        text: "v" + backend.version
         color: WishesTheme.current.titleColor
         anchors {
             left: title.right

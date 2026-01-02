@@ -7,11 +7,11 @@ Item {
 
     property string fontFamily: "Verdana"
 
-    property string textL: "Badge"
-    property string textR: "badge"
+    property string textL: ""
+    property string textR: ""
 
-    property bool boldL: false
-    property bool boldR: false
+    property bool boldL: true
+    property bool boldR: true
 
     property color colorL: "#313233"
     property color colorR: "#007ec6"
@@ -24,9 +24,11 @@ Item {
 
     property string logo: ""
     property string logoColor: "white"
+    property bool logoMipmap: false
 
-    property real padding: 5
-    property int radius: 3
+    property real padding: height * 0.25
+    property int radius: height * 0.15
+    property real textShadowOffset: height * 0.05
 
     property string url: ""
 
@@ -38,21 +40,18 @@ Item {
         anchors {
             top: parent.top
             bottom: parent.bottom
-            left: leftRect.right
+            left: parent.left
         }
         visible: textL != ""
-        width: root.textL == "" ? 0 : textItemL.width + root.padding * 2
+        width: textItemL.width + logoL.width + root.padding * 2 + (logoL.source != "" ? root.padding : 0)
 
         onPaint: {
             var ctx = getContext("2d")
             
-            console.log(leftRect.visible)
             var ltr = root.textL != "" ? root.radius : 0
             var rtr = root.textR != "" ? 0 : root.radius
             var rbr = root.textR != "" ? 0 : root.radius
             var lbr = root.textL != "" ? root.radius : 0
-
-            console.log(ltr, rtr, rbr, lbr)
 
             ctx.beginPath()
             ctx.moveTo(0, ltr)
@@ -88,6 +87,7 @@ Item {
             height: parent.height - root.padding * 2
             width: source != "" ? height : 0
             fillMode: Image.PreserveAspectFit
+            mipmap: root.logoMipmap
         }
 
         ColorOverlay {
@@ -99,7 +99,7 @@ Item {
 
         Text {
             x: textItemL.x
-            y: textItemL.y + 1
+            y: textItemL.y + root.textShadowOffset
             text: root.textL
             font {
                 family: root.fontFamily
@@ -140,13 +140,10 @@ Item {
         onPaint: {
             var ctx = getContext("2d")
             
-            console.log(leftRect.visible)
             var ltr = root.textL != "" ? 0 : root.radius
             var rtr = root.textR != "" ? root.radius : 0
             var rbr = root.textR != "" ? root.radius : 0
             var lbr = root.textL != "" ? 0 : root.radius
-
-            console.log(ltr, rtr, rbr, lbr)
 
             ctx.beginPath()
             ctx.moveTo(0, ltr)
@@ -173,7 +170,7 @@ Item {
 
         Text {
             x: textItemR.x
-            y: textItemR.y + 1
+            y: textItemR.y + root.textShadowOffset
             text: root.textR
             font {
                 family: root.fontFamily
@@ -199,7 +196,7 @@ Item {
 
     MouseArea {
         anchors.fill: parent
-        cursorShape: Qt.PointingHandCursor
+        cursorShape: root.url != "" ? Qt.PointingHandCursor : Qt.ArrowCursor
 
         onClicked: {
             if (root.url == "") return

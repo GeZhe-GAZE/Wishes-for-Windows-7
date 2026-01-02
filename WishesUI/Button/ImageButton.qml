@@ -164,7 +164,7 @@ Item {
         id: colorOverlay
         anchors.fill: btnImage
         source: btnImage
-        enabled: false
+        enabled: true
         color: root.state == "clicked" ? root.imageActiveColor : root.imageColor
 
         Behavior on color {

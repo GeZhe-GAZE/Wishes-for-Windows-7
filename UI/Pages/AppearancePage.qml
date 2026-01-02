@@ -65,6 +65,7 @@ Item {
             bottom: parent.bottom
             topMargin: 10
         }
+        clip: true
         //contentHeight: contentLayout.children.length * (root.itemRectHeight + contentLayout.spacing)
         ScrollBar.horizontal.policy: ScrollBar.AlwaysOff
 
@@ -185,7 +186,7 @@ Item {
 
             WRectangle {
                 width: parent.width
-                height: 200
+                height: fixedText1.height + gameFontsLayout.height + 20
                 radius: 10
                 
                 Text {
@@ -204,17 +205,17 @@ Item {
                 }
 
                 Column {
+                    id: gameFontsLayout
                     anchors {
                         top: fixedText1.bottom
                         left: parent.left
                         right: parent.right
-                        bottom: parent.bottom
                         margins: 5
                     }
-                    spacing: 5
+                    spacing: 20
 
                     Item {
-                        height: (parent.height - parent.spacing * 3) / 4
+                        height: 50
                         width: parent.width
 
                         Text {
@@ -231,20 +232,23 @@ Item {
                             }
                         }
 
-                        ToggleTextButton {
+                        SwitchButton {
                             id: applyGenshinFontButton
-                            text: WishesTheme.fontFamily == GenshinFontLoader.name ?
-                                    "已启用" : "启用"
                             anchors {
                                 verticalCenter: parent.verticalCenter
                                 right: parent.right
                             }
                             height: parent.height * 0.8
-                            width: 100
-                            radius: 5
 
-                            onToggled: {
-                                WishesTheme.fontFamily = GenshinFontLoader.name
+                            textOn: "使用中"
+                            textOff: "启用"
+
+                            onClicked: {
+                                if (isOn) {
+                                    WishesTheme.fontFamily = GenshinFontLoader.name
+                                } else {
+                                    WishesTheme.fontFamily = fontFamilyComboBox.currentText
+                                }
                             }
 
                             Connections {
@@ -259,7 +263,7 @@ Item {
                     }
 
                     Item {
-                        height: (parent.height - parent.spacing * 3) / 4
+                        height: 50
                         width: parent.width
 
                         Text {
@@ -276,20 +280,23 @@ Item {
                             }
                         }
 
-                        ToggleTextButton {
+                        SwitchButton {
                             id: applyStarRailFontButton
-                            text: WishesTheme.fontFamily == StarRailFontLoader.name ?
-                                    "已启用" : "启用"
                             anchors {
                                 verticalCenter: parent.verticalCenter
                                 right: parent.right
                             }
                             height: parent.height * 0.8
-                            width: 100
-                            radius: 5
 
-                            onToggled: {
-                                WishesTheme.fontFamily = StarRailFontLoader.name
+                            textOn: "使用中"
+                            textOff: "启用"
+
+                            onClicked: {
+                                if (isOn) {
+                                    WishesTheme.fontFamily = StarRailFontLoader.name
+                                } else {
+                                    WishesTheme.fontFamily = fontFamilyComboBox.currentText
+                                }
                             }
 
                             Connections {
@@ -301,10 +308,36 @@ Item {
                                 }
                             }
                         }
+
+                        // ToggleTextButton {
+                        //     id: applyStarRailFontButton
+                        //     text: WishesTheme.fontFamily == StarRailFontLoader.name ?
+                        //             "已启用" : "启用"
+                        //     anchors {
+                        //         verticalCenter: parent.verticalCenter
+                        //         right: parent.right
+                        //     }
+                        //     height: parent.height * 0.8
+                        //     width: 100
+                        //     radius: 5
+
+                        //     onToggled: {
+                        //         WishesTheme.fontFamily = StarRailFontLoader.name
+                        //     }
+
+                        //     Connections {
+                        //         target: WishesTheme
+                        //         function onFontFamilyChanged() {
+                        //             if (WishesTheme.fontFamily != StarRailFontLoader.name) {
+                        //                 applyStarRailFontButton.uncheck()
+                        //             }
+                        //         }
+                        //     }
+                        // }
                     }
 
                     Item {
-                        height: (parent.height - parent.spacing * 3) / 4
+                        height: 50
                         width: parent.width
 
                         Text {
@@ -321,20 +354,23 @@ Item {
                             }
                         }
 
-                        ToggleTextButton {
+                        SwitchButton {
                             id: applyZZZFontButton
-                            text: WishesTheme.fontFamily == ZZZFontLoader.name ?
-                                    "已启用" : "启用"
                             anchors {
                                 verticalCenter: parent.verticalCenter
                                 right: parent.right
                             }
                             height: parent.height * 0.8
-                            width: 100
-                            radius: 5
 
-                            onToggled: {
-                                WishesTheme.fontFamily = ZZZFontLoader.name
+                            textOn: "使用中"
+                            textOff: "启用"
+
+                            onClicked: {
+                                if (isOn) {
+                                    WishesTheme.fontFamily = ZZZFontLoader.name
+                                } else {
+                                    WishesTheme.fontFamily = fontFamilyComboBox.currentText
+                                }
                             }
 
                             Connections {
@@ -346,6 +382,32 @@ Item {
                                 }
                             }
                         }
+
+                        // ToggleTextButton {
+                        //     id: applyZZZFontButton
+                        //     text: WishesTheme.fontFamily == ZZZFontLoader.name ?
+                        //             "已启用" : "启用"
+                        //     anchors {
+                        //         verticalCenter: parent.verticalCenter
+                        //         right: parent.right
+                        //     }
+                        //     height: parent.height * 0.8
+                        //     width: 100
+                        //     radius: 5
+
+                        //     onToggled: {
+                        //         WishesTheme.fontFamily = ZZZFontLoader.name
+                        //     }
+
+                        //     Connections {
+                        //         target: WishesTheme
+                        //         function onFontFamilyChanged() {
+                        //             if (WishesTheme.fontFamily != ZZZFontLoader.name) {
+                        //                 applyZZZFontButton.uncheck()
+                        //             }
+                        //         }
+                        //     }
+                        // }
                     }
                 }
             }

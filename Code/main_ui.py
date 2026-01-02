@@ -16,7 +16,7 @@ def registerWishesType():
     qmlRegisterType(Backend, "Wishes", 1, 0, "Backend") # type: ignore
     qmlRegisterType(CardQueryParams, "Wishes", 1, 0, "CardQueryParams") # type: ignore
 
-  
+
 def main():
     app = QGuiApplication(sys.argv)
     app.setWindowIcon(QIcon("Wishes.ico"))

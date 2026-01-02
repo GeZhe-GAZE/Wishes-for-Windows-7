@@ -6,4 +6,5 @@
 6. 游戏字体 [done]
 7. Card CardGroup CardPool Logic Tag 图标
 8. Rarity 文本与图片的选择性显示
-9. 徽章组件
+9. 徽章组件 [done]
+10. 关于界面
